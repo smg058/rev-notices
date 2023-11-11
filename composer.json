@@ -1,12 +1,12 @@
 {
-    "name": "brainstormforce/astra-notices",
+    "name": "chayson/rev-notices",
     "type": "wordpress-plugin",
     "description": "Easily create admin notices",
     "license": "GPL-3.0-or-later",
     "authors": [
         {
-            "name": "Brainstorm Force",
-            "email": "hello@bsf.io"
+            "name": "Chayson Media",
+            "email": "dev@chayson.com"
         }
     ],
     "require": {
