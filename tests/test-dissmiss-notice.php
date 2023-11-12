@@ -2,7 +2,7 @@
 /**
  * DissMiss Notice Testcase
  *
- * @package Astra_Notices
+ * @package REV_Notices
  */
 
 /**
@@ -22,11 +22,11 @@ class TestDismissNotice extends WP_Ajax_UnitTestCase {
 			)
 		);
 
-		Astra_Notices::add_notice(
+		REV_Notices::add_notice(
 			array(
-				'id'         => 'astra-sites-5-start-notice',
+				'id'         => 'rev-sites-5-start-notice',
 				'type'       => 'info',
-				'class'      => 'astra-sites-5-star',
+				'class'      => 'rev-sites-5-star',
 				'capability' => 'edit_posts',
 				'show_if'    => true,
 				'message'    => 'Sample Notice',
@@ -36,12 +36,12 @@ class TestDismissNotice extends WP_Ajax_UnitTestCase {
 		wp_set_current_user( $this->editor_user_id );
 
 		$_POST = array(
-			'nonce'     => wp_create_nonce( 'astra-notices' ),
-			'notice_id' => 'astra-sites-5-start-notice',
+			'nonce'     => wp_create_nonce( 'rev-notices' ),
+			'notice_id' => 'rev-sites-5-start-notice',
 		);
 
 		try {
-			$this->_handleAjax( 'astra-notice-dismiss' );
+			$this->_handleAjax( 'rev-notice-dismiss' );
 		} catch ( WPAjaxDieContinueException $e ) {
 			unset( $e );
 		}
@@ -50,7 +50,7 @@ class TestDismissNotice extends WP_Ajax_UnitTestCase {
 
 		$this->assertContains( $response, array( 'success' => true ) );
 
-		$user_meta_status = get_user_meta( $this->editor_user_id, 'astra-sites-5-start-notice', true );
+		$user_meta_status = get_user_meta( $this->editor_user_id, 'rev-sites-5-start-notice', true );
 		$this->assertSame( $user_meta_status, 'notice-dismissed' );
 	}
 }
