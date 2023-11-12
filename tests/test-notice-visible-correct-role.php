@@ -2,7 +2,7 @@
 /**
  * TestNoticeVisibleForCorrectRole Testcase
  *
- * @package Astra_Notices
+ * @package REV_Notices
  */
 
 /**
@@ -42,13 +42,13 @@ class TestNoticeVisibleForCorrectRole extends WP_UnitTestCase {
 	 */
 	public function test_user_can_see_notice() {
 		// Singleton is not used here as that causes the notices registered in one test to be visible in the next.
-		$astra_notices = new Astra_Notices();
+		$rev_notices = new REV_Notices();
 
-		Astra_Notices::add_notice(
+		REV_Notices::add_notice(
 			array(
 				'id'         => 'notice-with-capability',
 				'type'       => 'info',
-				'class'      => 'astra-sites-5-star',
+				'class'      => 'rev-sites-5-star',
 				'capability' => 'edit_posts',
 				'show_if'    => true,
 				'message'    => 'Notice With Capability',
@@ -57,15 +57,15 @@ class TestNoticeVisibleForCorrectRole extends WP_UnitTestCase {
 
 		// Notice should be visible to the `editor` user.
 		wp_set_current_user( $this->editor_user_id );
-		$this->assertContains( 'Notice With Capability', get_echo( array( $astra_notices, 'show_notices' ) ) );
+		$this->assertContains( 'Notice With Capability', get_echo( array( $rev_notices, 'show_notices' ) ) );
 
 		// Notice should not be visible to the `subscriber` user.
 		wp_set_current_user( $this->subscriber_user_id );
-		$this->assertNotContains( 'Notice With Capability', get_echo( array( $astra_notices, 'show_notices' ) ) );
+		$this->assertNotContains( 'Notice With Capability', get_echo( array( $rev_notices, 'show_notices' ) ) );
 
 		// Notice should be visible to the `administrator`.
 		wp_set_current_user( $this->administrator_user_id );
-		$this->assertContains( 'Notice With Capability', get_echo( array( $astra_notices, 'show_notices' ) ) );
+		$this->assertContains( 'Notice With Capability', get_echo( array( $rev_notices, 'show_notices' ) ) );
 	}
 
 	/**
@@ -73,13 +73,13 @@ class TestNoticeVisibleForCorrectRole extends WP_UnitTestCase {
 	 */
 	public function test_user_can_see_notice_without_capability() {
 		// Singleton is not used here as that causes the notices registered in one test to be visible in the next.
-		$astra_notices = new Astra_Notices();
+		$rev_notices = new REV_Notices();
 
-		Astra_Notices::add_notice(
+		REV_Notices::add_notice(
 			array(
 				'id'      => 'notice-without-explicite-capability',
 				'type'    => 'info',
-				'class'   => 'astra-sites-5-star',
+				'class'   => 'rev-sites-5-star',
 				'show_if' => true,
 				'message' => 'Notice Without Explicite Capibility',
 			)
@@ -87,14 +87,14 @@ class TestNoticeVisibleForCorrectRole extends WP_UnitTestCase {
 
 		// Notice should not be visible to the `editor` user.
 		wp_set_current_user( $this->editor_user_id );
-		$this->assertNotContains( 'Notice Without Explicite Capibility', get_echo( array( $astra_notices, 'show_notices' ) ) );
+		$this->assertNotContains( 'Notice Without Explicite Capibility', get_echo( array( $rev_notices, 'show_notices' ) ) );
 
 		// Notice should not be visible to the `subscriber` user.
 		wp_set_current_user( $this->subscriber_user_id );
-		$this->assertNotContains( 'Notice Without Explicite Capibility', get_echo( array( $astra_notices, 'show_notices' ) ) );
+		$this->assertNotContains( 'Notice Without Explicite Capibility', get_echo( array( $rev_notices, 'show_notices' ) ) );
 
 		// Notice should be visible to the `administrator`.
 		wp_set_current_user( $this->administrator_user_id );
-		$this->assertContains( 'Notice Without Explicite Capibility', get_echo( array( $astra_notices, 'show_notices' ) ) );
+		$this->assertContains( 'Notice Without Explicite Capibility', get_echo( array( $rev_notices, 'show_notices' ) ) );
 	}
 }
