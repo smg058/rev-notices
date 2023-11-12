@@ -1,10 +1,10 @@
 <?php
 /**
- * Astra Notices
+ * Revolux Notices
  *
  * An easy to use PHP Library to add dismissible admin notices in the WordPress admin.
  *
- * @package Astra Notices
+ * @package Rev Notices
  * @since 1.0.0
  */
 
@@ -12,14 +12,14 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit; // Exit if accessed directly.
 }
 
-if ( ! class_exists( 'Astra_Notices' ) ) :
+if ( ! class_exists( 'REV_Notices' ) ) :
 
 	/**
-	 * Astra_Notices
+	 * REV_Notices
 	 *
 	 * @since 1.0.0
 	 */
-	class Astra_Notices {
+	class REV_Notices {
 
 		/**
 		 * Notices
@@ -69,7 +69,7 @@ if ( ! class_exists( 'Astra_Notices' ) ) :
 		public function __construct() {
 			add_action( 'admin_notices', array( $this, 'show_notices' ), 30 );
 			add_action( 'admin_enqueue_scripts', array( $this, 'enqueue_scripts' ) );
-			add_action( 'wp_ajax_astra-notice-dismiss', array( $this, 'dismiss_notice' ) );
+			add_action( 'wp_ajax_rev-notice-dismiss', array( $this, 'dismiss_notice' ) );
 			add_filter( 'wp_kses_allowed_html', array( $this, 'add_data_attributes' ), 10, 2 );
 		}
 
@@ -111,11 +111,11 @@ if ( ! class_exists( 'Astra_Notices' ) ) :
 			$notice              = $this->get_notice_by_id( $notice_id );
 			$capability          = isset( $notice['capability'] ) ? $notice['capability'] : 'manage_options';
 
-			if ( ! apply_filters( 'astra_notices_user_cap_check', current_user_can( $capability ) ) ) {
+			if ( ! apply_filters( 'rev_notices_user_cap_check', current_user_can( $capability ) ) ) {
 				return;
 			}
 
-			if ( false === wp_verify_nonce( $nonce, 'astra-notices' ) ) {
+			if ( false === wp_verify_nonce( $nonce, 'rev-notices' ) ) {
 				wp_send_json_error( esc_html_e( 'WordPress Nonce not validated.' ) );
 			}
 
@@ -141,13 +141,13 @@ if ( ! class_exists( 'Astra_Notices' ) ) :
 		 * @return void
 		 */
 		public function enqueue_scripts() {
-			wp_register_style( 'astra-notices', self::get_url() . 'notices.css', array(), self::$version );
-			wp_register_script( 'astra-notices', self::get_url() . 'notices.js', array( 'jquery' ), self::$version, true );
+			wp_register_style( 'rev-notices', self::get_url() . 'notices.css', array(), self::$version );
+			wp_register_script( 'rev-notices', self::get_url() . 'notices.js', array( 'jquery' ), self::$version, true );
 			wp_localize_script(
-				'astra-notices',
-				'astraNotices',
+				'rev-notices',
+				'revNotices',
 				array(
-					'_notice_nonce' => wp_create_nonce( 'astra-notices' ),
+					'_notice_nonce' => wp_create_nonce( 'rev-notices' ),
 				)
 			);
 		}
@@ -215,7 +215,7 @@ if ( ! class_exists( 'Astra_Notices' ) ) :
 		 */
 		public function show_notices() {
 			$defaults = array(
-				'id'                         => '',      // Optional, Notice ID. If empty it set `astra-notices-id-<$array-index>`.
+				'id'                         => '',      // Optional, Notice ID. If empty it set `rev-notices-id-<$array-index>`.
 				'type'                       => 'info',  // Optional, Notice type. Default `info`. Expected [info, warning, notice, error].
 				'message'                    => '',      // Optional, Message.
 				'show_if'                    => true,    // Optional, Show notice on custom condition. E.g. 'show_if' => if( is_admin() ) ? true, false, .
@@ -223,7 +223,7 @@ if ( ! class_exists( 'Astra_Notices' ) ) :
 				'display-notice-after'       => false,      // Optional, Dismiss-able notice time. It'll auto show after given time.
 				'class'                      => '',      // Optional, Additional notice wrapper class.
 				'priority'                   => 10,      // Priority of the notice.
-				'display-with-other-notices' => true,    // Should the notice be displayed if other notices  are being displayed from Astra_Notices.
+				'display-with-other-notices' => true,    // Should the notice be displayed if other notices  are being displayed from REV_Notices.
 				'is_dismissible'             => true,
 				'capability'                 => 'manage_options', // User capability - This capability is required for the current user to see this notice.
 			);
@@ -269,25 +269,25 @@ if ( ! class_exists( 'Astra_Notices' ) ) :
 		 * @return void
 		 */
 		public static function markup( $notice = array() ) {
-			wp_enqueue_script( 'astra-notices' );
-			wp_enqueue_style( 'astra-notices' );
+			wp_enqueue_script( 'rev-notices' );
+			wp_enqueue_style( 'rev-notices' );
 
-			do_action( 'astra_notice_before_markup' );
+			do_action( 'rev_notice_before_markup' );
 
-			do_action( "astra_notice_before_markup_{$notice['id']}" );
+			do_action( "rev_notice_before_markup_{$notice['id']}" );
 
 			?>
-			<div id="<?php echo esc_attr( $notice['id'] ); ?>" class="<?php echo 'astra-notice-wrapper ' . esc_attr( $notice['classes'] ); ?>" data-repeat-notice-after="<?php echo esc_attr( $notice['repeat-notice-after'] ); ?>">
-				<div class="astra-notice-container">
-					<?php do_action( "astra_notice_inside_markup_{$notice['id']}" ); ?>
+			<div id="<?php echo esc_attr( $notice['id'] ); ?>" class="<?php echo 'rev-notice-wrapper ' . esc_attr( $notice['classes'] ); ?>" data-repeat-notice-after="<?php echo esc_attr( $notice['repeat-notice-after'] ); ?>">
+				<div class="rev-notice-container">
+					<?php do_action( "rev_notice_inside_markup_{$notice['id']}" ); ?>
 					<?php echo wp_kses_post( $notice['message'] ); ?>
 				</div>
 			</div>
 			<?php
 
-			do_action( "astra_notice_after_markup_{$notice['id']}" );
+			do_action( "rev_notice_after_markup_{$notice['id']}" );
 
-			do_action( 'astra_notice_after_markup' );
+			do_action( 'rev_notice_after_markup' );
 		}
 
 		/**
@@ -299,7 +299,7 @@ if ( ! class_exists( 'Astra_Notices' ) ) :
 		 * @return array       Notice wrapper classes.
 		 */
 		private static function get_wrap_classes( $notice ) {
-			$classes = array( 'astra-notice', 'notice' );
+			$classes = array( 'rev-notice', 'notice' );
 
 			if ( $notice['is_dismissible'] ) {
 				$classes[] = 'is-dismissible';
@@ -327,7 +327,7 @@ if ( ! class_exists( 'Astra_Notices' ) ) :
 				return $notice['id'];
 			}
 
-			return 'astra-notices-id-' . $key;
+			return 'rev-notices-id-' . $key;
 		}
 
 		/**
@@ -366,7 +366,7 @@ if ( ! class_exists( 'Astra_Notices' ) ) :
 		}
 
 		/**
-		 * Get base URL for the astra-notices.
+		 * Get base URL for the rev-notices.
 		 *
 		 * @return mixed URL.
 		 */
@@ -386,6 +386,6 @@ if ( ! class_exists( 'Astra_Notices' ) ) :
 	/**
 	 * Kicking this off by calling 'get_instance()' method
 	 */
-	Astra_Notices::get_instance();
+	REV_Notices::get_instance();
 
 endif;
