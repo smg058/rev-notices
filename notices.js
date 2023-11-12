@@ -1,7 +1,7 @@
 /**
  * Customizer controls toggles
  *
- * @package Astra
+ * @package REV
  */
 
 ( function( $ ) {
@@ -10,9 +10,9 @@
 	 * Helper class for the main Customizer interface.
 	 *
 	 * @since 1.0.0
-	 * @class ASTCustomizer
+	 * @class REVCustomizer
 	 */
-	AstraNotices = {
+	REVNotices = {
 
 		/**
 		 * Initializes our custom logic for the Customizer.
@@ -26,7 +26,7 @@
 		},
 
 		/**
-		 * Binds events for the Astra Portfolio.
+		 * Binds events for the REV Portfolio.
 		 *
 		 * @since 1.0.0
 		 * @access private
@@ -34,33 +34,33 @@
 		 */
 		_bind: function()
 		{
-			$( document ).on('click', '.astra-notice-close', AstraNotices._dismissNoticeNew );
-			$( document ).on('click', '.astra-notice .notice-dismiss', AstraNotices._dismissNotice );
+			$( document ).on('click', '.rev-notice-close', REVNotices._dismissNoticeNew );
+			$( document ).on('click', '.rev-notice .notice-dismiss', REVNotices._dismissNotice );
 		},
 
 		_dismissNotice: function( event ) {
 			event.preventDefault();
 
-			var repeat_notice_after = $( this ).parents('.astra-notice').data( 'repeat-notice-after' ) || '';
-			var notice_id = $( this ).parents('.astra-notice').attr( 'id' ) || '';
+			var repeat_notice_after = $( this ).parents('.rev-notice').data( 'repeat-notice-after' ) || '';
+			var notice_id = $( this ).parents('.rev-notice').attr( 'id' ) || '';
 
-			AstraNotices._ajax( notice_id, repeat_notice_after );
+			REVNotices._ajax( notice_id, repeat_notice_after );
 		},
 
 		_dismissNoticeNew: function( event ) {
 			event.preventDefault();
 
 			var repeat_notice_after = $( this ).attr( 'data-repeat-notice-after' ) || '';
-			var notice_id = $( this ).parents('.astra-notice').attr( 'id' ) || '';
+			var notice_id = $( this ).parents('.rev-notice').attr( 'id' ) || '';
 
-			var $el = $( this ).parents('.astra-notice');
+			var $el = $( this ).parents('.rev-notice');
 			$el.fadeTo( 100, 0, function() {
 				$el.slideUp( 100, function() {
 					$el.remove();
 				});
 			});
 
-			AstraNotices._ajax( notice_id, repeat_notice_after );
+			REVNotices._ajax( notice_id, repeat_notice_after );
 
 			var link   = $( this ).attr( 'href' ) || '';
 			var target = $( this ).attr( 'target' ) || '';
@@ -79,8 +79,8 @@
 				url: ajaxurl,
 				type: 'POST',
 				data: {
-					action            : 'astra-notice-dismiss',
-					nonce             : astraNotices._notice_nonce,
+					action            : 'rev-notice-dismiss',
+					nonce             : revNotices._notice_nonce,
 					notice_id         : notice_id,
 					repeat_notice_after : parseInt( repeat_notice_after ),
 				},
@@ -90,6 +90,6 @@
 	};
 
 	$( function() {
-		AstraNotices.init();
+		REVNotices.init();
 	} );
 } )( jQuery );
