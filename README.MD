@@ -1,16 +1,16 @@
-# Astra Notices
+# Revolux Notices
 Easily Create Admin Notices.
 
 ### How to use this library
 1. Download the latest release from the tag as shown in the screenshot.
 ![Download Package](https://user-images.githubusercontent.com/2931091/124632235-c91aa680-dea1-11eb-9213-dbb9c4615d60.jpg)
-2. Require the file `class-astra-notices.php` in your project.
-3. Register your notices on action `admin_init` by calling method `Astra_Notices::add_notice()`
+2. Require the file `class-rev-notices.php` in your project.
+3. Register your notices on action `admin_init` by calling method `REV_Notices::add_notice()`
 
 **Default Parameters**
 ```PHP
 array(
-    'id'                         => '',      // Optional, Notice ID. If empty it set `astra-notices-id-<$array-index>`.
+    'id'                         => '',      // Optional, Notice ID. If empty it set `rev-notices-id-<$array-index>`.
     'type'                       => 'info',  // Optional, Notice type. Default `info`. Expected [info, warning, notice, error].
     'message'                    => '',      // Optional, Message.
     'show_if'                    => true,    // Optional, Show notice on custom condition. E.g. 'show_if' => if( is_admin() ) ? true, false, .
@@ -18,7 +18,7 @@ array(
     'display-notice-after'       => false,      // Optional, Dismiss-able notice time. It'll auto show after given time.
     'class'                      => '',      // Optional, Additional notice wrapper class.
     'priority'                   => 10,      // Priority of the notice.
-    'display-with-other-notices' => true,    // Should the notice be displayed if other notices  are being displayed from Astra_Notices.
+    'display-with-other-notices' => true,    // Should the notice be displayed if other notices  are being displayed from REV_Notices.
 )
 ```
 
@@ -27,7 +27,7 @@ array(
 add_action(
 	'admin_init',
 	function() {
-		Astra_Notices::add_notice(
+		REV_Notices::add_notice(
 			array(
 				'id'                         => 'your-notice-id',
 				'type'                       => '',
@@ -39,16 +39,16 @@ add_action(
 								%2$s
 							</div>
 							%3$s<br />
-							<div class="astra-review-notice-container">
-								<a href="%4$s" class="astra-notice-close astra-review-notice button-primary" target="_blank">
+							<div class="rev-review-notice-container">
+								<a href="%4$s" class="rev-notice-close rev-review-notice button-primary" target="_blank">
 								%5$s
 								</a>
 							<span class="dashicons dashicons-calendar"></span>
-								<a href="#" data-repeat-notice-after="%6$s" class="astra-notice-close astra-review-notice">
+								<a href="#" data-repeat-notice-after="%6$s" class="rev-notice-close rev-review-notice">
 								%7$s
 								</a>
 							<span class="dashicons dashicons-smiley"></span>
-								<a href="#" class="astra-notice-close astra-review-notice">
+								<a href="#" class="rev-notice-close rev-review-notice">
 								%8$s
 								</a>
 							</div>
@@ -72,4 +72,4 @@ add_action(
 );
 ```
 
-Also check the example of [how this is used](https://github.com/brainstormforce/astra/blob/b9038d6ea02ae04b27db23b789b66b60907b4c16/inc/core/class-astra-admin-settings.php#L148-L187) in the Astra Theme. 
+Also check the example of [how this is used](https://github.com/brainstormforce/rev/blob/b9038d6ea02ae04b27db23b789b66b60907b4c16/inc/core/class-rev-admin-settings.php#L148-L187) in the Revolux Theme. 
